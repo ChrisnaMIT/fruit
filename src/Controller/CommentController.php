@@ -16,7 +16,7 @@ final class CommentController extends AbstractController
     #[Route('/comment/{id}', name: 'app_comment')]
     public function comment(Post $post, Request $request, EntityManagerInterface $manager): Response
     {
-        $comment =new $Comment();
+        $comment = new Comment();
         $form = $this->createForm(CommentForm::class, $comment);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -26,6 +26,6 @@ final class CommentController extends AbstractController
             $manager->persist($comment);
             $manager->flush();
         }
-        return $this->redirectToRoute('app_post_show', ['id'=> $Comment->getPost()->getId()]);
+        return $this->redirectToRoute('app_post_show', ['id'=> $comment->getPost()->getId()]);
     }
 }

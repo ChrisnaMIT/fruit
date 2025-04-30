@@ -33,6 +33,7 @@ final class PostController extends AbstractController
         $form = $this->createForm(CommentForm::class, $comment);
         return $this->render('post/show.html.twig', [
             'post' => $post,
+            'form' => $form->createView(),
         ]);
     }
 

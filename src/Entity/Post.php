@@ -7,20 +7,34 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 class Post
 {
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+
+
+
     #[ORM\Column(type: Types::TEXT)]
     private ?string $title = null;
 
+    #[Assert\NotBlank(message: "Message vide !!")]
+    #[Assert\Length(
+        min:3,
+        max:100,
+        minMessage: 'Trop court !',
+        maxMessage: 'Trop long !',
+    )]
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
+
 
     #[ORM\ManyToOne(inversedBy: 'posts')]
     private ?User $author = null;
@@ -210,5 +224,15 @@ class Post
         }
 
         return $this;
+    }
+
+    public function isLikedBy(User $user): bool
+    {
+        foreach ($this->likes as $like) {
+            if($like->getAuthor() === $user){
+                return true;
+            }
+        }
+        return false;
     }
 }
