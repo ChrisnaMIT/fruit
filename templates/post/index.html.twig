@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PostController!{% endblock %}
+
+{% block body %}
+
+    {% for post in posts %}
+        <div class="card" style="width:90%">
+            <div class="card-title"><h3>{{ post.title }}</h3></div>
+            <div class="card-body">
+                <div class="d-flex-justify-content-around">
+                    <img src="{{ vich_uploader_asset(post.images[0],"imageFile") | imagine_filter('postshow') }}" alt="">
+
+
+
+                </div>
+                <p>Author : {{ post.author.email }}</p>
+                <p>Date : {{ post.createdAt | date('Ymd') }}</p>
+                <p>Category : {{ post.category.name }}</p>
+
+                <p>{{ post.content }}</p>
+
+
+            </div>
+            {% include 'like/like.html.twig' %}
+
+            <a href="{{ path('app_post_show', {id:post.id}) }}" class="btn btn-primary">Read</a>
+
+        </div>
+
+    {% endfor %}
+{% endblock %}
