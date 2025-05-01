@@ -24,7 +24,7 @@
 
         <div class="d-flex">
             {% include 'like/like.html.twig' %}
-            <a href="" class="btn btn-warning">Edit</a>
+            <a href="{{ path('app_post_delete', {id:post.id}) }}" class="btn btn-danger">Supprimer</a>
             <a href="{{ path('app_post') }}" class="btn btn-warning">Retour</a>
             <a href="{{ path('app_post_images', {id:post.id}) }}" class="btn btn-success">images</a>
         </div>

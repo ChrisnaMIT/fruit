@@ -3,11 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\PostRepository;
+use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Validator\Constraints as Assert;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+
 
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
@@ -20,19 +22,25 @@ class Post
     private ?int $id = null;
 
 
-
-
-    #[ORM\Column(type: Types::TEXT)]
+    #[Assert\Length(min: 3, max: 100)]
+    #[ORM\Column(length: 255)]
+    #[Assert\Regex(
+        pattern: '/^(?!.*\bcrevette\b).*/i',
+        message: 'Le mot "crevette" est invalide'
+)]
+  // #[ORM\Column(type: Types::TEXT)]
     private ?string $title = null;
 
-    #[Assert\NotBlank(message: "Message vide !!")]
-    #[Assert\Length(
-        min:3,
-        max:100,
-        minMessage: 'Trop court !',
-        maxMessage: 'Trop long !',
-    )]
-    #[ORM\Column(type: Types::TEXT)]
+
+
+    #[Assert\Length(min: 3, max: 100)]
+    #[ORM\Column(length: 255)]
+    #[Assert\Regex(
+        pattern: '/^(?!.*\chapeau\b).*/i',
+        message: 'Le mot "chapeau" est invalide'
+)]
+
+ //   #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
 

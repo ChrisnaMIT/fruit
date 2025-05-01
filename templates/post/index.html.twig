@@ -9,7 +9,9 @@
             <div class="card-title"><h3>{{ post.title }}</h3></div>
             <div class="card-body">
                 <div class="d-flex-justify-content-around">
-                    <img src="{{ vich_uploader_asset(post.images[0],"imageFile") | imagine_filter('postshow') }}" alt="">
+                    {% for image in post.images %}
+                        <img src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('postshow') }}" alt="">
+                    {% endfor %}
 
 
 

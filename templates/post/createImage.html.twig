@@ -10,10 +10,11 @@
                    class="btn btn-danger"><strong>X</strong></a>
             </div>
 
+
         {% endfor %}
 
     </div>
-
+    <a href="{{ path('app_post') }}" class="btn btn-warning">Retour</a>
     <hr>
     {{ form_start(form) }}
     {{ form_widget(form.imageFile) }}

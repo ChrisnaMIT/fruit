@@ -12,6 +12,7 @@ use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Liip\ImagineBundle\Form\Type\ImageType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -63,6 +64,29 @@ final class PostController extends AbstractController
         ]);
     }
 
+    #[Route('/post/delete/{id}', name: 'app_post_delete')]
+    public function delete(Request $request, Post $post, EntityManagerInterface $manager): Response
+    {
+        if(!$this->getUser()){
+            return $this->redirectToRoute('app_login');
+        }
+
+
+
+        if($post){
+
+            foreach ($post->getLikes() as $like) {
+                $manager->remove($like);
+            }
+            foreach ($post->getImages() as $image) {
+                $manager->remove($image);
+            }
+
+            $manager->remove($post);
+            $manager->flush();
+        }
+        return $this->redirectToRoute('app_post');
+    }
 
     #[Route('/post/{id}/images', name: 'app_post_images')]
     public function createImage(Post $post, Request $request, EntityManagerInterface $manager): Response
@@ -103,15 +127,15 @@ final class PostController extends AbstractController
 
         $post = $image->getPost();
         if($post->getAuthor() != $image->getPost()){
-            return $this->redirectToRoute('app_post_show', ['id' => $post->getId()]);
+            return $this->redirectToRoute('app_post', ['id' => $post->getId()]);
         }
 
         if(!$this->getUser()->getPosts()->contains($post)){
-            return $this->redirectToRoute('app_post_show', ['id' => $post->getId()]);
+            return $this->redirectToRoute('app_post', ['id' => $post->getId()]);
         }
         $manager->remove($post);
         $manager->flush();
-        return $this->redirectToRoute('app_post_show', ['id' => $post->getId()]);
+        return $this->redirectToRoute('app_post', ['id' => $post->getId()]);
     }
 
 
