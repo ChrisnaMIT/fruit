@@ -4,11 +4,14 @@
     {{ form_start(form) }}
 
     {{ form_errors(form) }}
+    {{ form_start(form, {attr: {'novalidate': 'novalidate'}}) }}
 
     <div class="mb-3">
         {{ form_label(form.title) }}
         {{ form_widget(form.title) }}
         {{ form_errors(form.title) }}
+
+
     </div>
 
     <div class="mb-3">
@@ -20,8 +23,9 @@
     <div class="mb-3">
         {{ form_label(form.category) }}
         {{ form_widget(form.category) }}
-        {{ form_errors(form.category) }}
     </div>
+
+
 
     <button type="submit" class="btn btn-success">Post !</button>
     <a href="{{ path('app_post') }}" class="btn btn-warning">Retour</a>

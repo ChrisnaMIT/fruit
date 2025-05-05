@@ -10,6 +10,7 @@ use App\Form\ImageForm;
 use App\Form\PostForm;
 use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Liip\ImagineBundle\Form\Type\ImageType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
@@ -20,11 +21,22 @@ use Symfony\Component\Routing\Attribute\Route;
 final class PostController extends AbstractController
 {
     #[Route('/', name: 'app_post')]
-    public function index(PostRepository $repository): Response
+    public function index(PostRepository $repository, PaginatorInterface $paginator, Request $request): Response
     {
+
+
+        $pagination = $paginator->paginate(
+            $repository->findAll(),
+            $request->query->getInt('page', 1),
+            2
+        );
+
         return $this->render('post/index.html.twig', [
             'posts' => $repository->findAll(),
+            'pagination' => $pagination,
         ]);
+
+
     }
 
     #[Route('/post/show/{id}', name: 'app_post_show', priority: -1)]
@@ -60,7 +72,7 @@ final class PostController extends AbstractController
         }
 
         return $this->render('post/create.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form,
         ]);
     }
 

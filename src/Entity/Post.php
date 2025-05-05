@@ -22,21 +22,30 @@ class Post
     private ?int $id = null;
 
 
-    #[Assert\Length(min: 3, max: 100)]
+    #[Assert\Length(min: 3, max: 10,
+        minMessage:'Trop court',
+        maxMessage: 'Trop long'
+    )]
+
     #[ORM\Column(length: 255)]
     #[Assert\Regex(
         pattern: '/^(?!.*\bcrevette\b).*/i',
         message: 'Le mot "crevette" est invalide'
+
 )]
   // #[ORM\Column(type: Types::TEXT)]
     private ?string $title = null;
 
 
 
-    #[Assert\Length(min: 3, max: 100)]
+    #[Assert\Length(min: 3, max: 100,
+        minMessage:'Trop court',
+        maxMessage: 'Trop long'
+
+    )]
     #[ORM\Column(length: 255)]
     #[Assert\Regex(
-        pattern: '/^(?!.*\chapeau\b).*/i',
+        pattern: '/^(?!.*\bchapeau\b).*/i',
         message: 'Le mot "chapeau" est invalide'
 )]
 
